@@ -12,9 +12,6 @@ fi
 # ipython editor
 export EDITOR="/usr/local/bin/vim"
 
-# Berry credentials (move somewhere else or handle it diferently)
-# export CREDENTIALS_DIR=/meta/credentials
-
 # Bash completion
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
@@ -32,12 +29,8 @@ HISTFILESIZE=
 export HISTCONTROL="ignoreboth:erasedups"
 
 # After each command, save and reload history
+# History made available through all tty
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-
-# Setting PATH for Python 3.6
-# The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
-export PATH
 
 # Vi mode for interactive terminal:
 if [[ $- == *i* ]]; then
@@ -62,12 +55,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# MACOSX
 # add a "gnubin" directory to your PATH
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
-# `ls` colorized
+# Aliases
 alias ls="ls --color=always"
-
-# This automatically sources the rc file under those circumstances where it
-# would normally only process the profile.
-. ~/.bashrc
