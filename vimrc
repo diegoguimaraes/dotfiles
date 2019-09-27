@@ -1,25 +1,21 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required by vundle
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/bundle')
 
-Plugin 'gmarik/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'w0rp/ale'
-Plugin 'kien/ctrlp.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'morhetz/gruvbox'
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'majutsushi/tagbar'
-Plugin 'fatih/vim-go'
+Plug 'gmarik/Vundle.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'w0rp/ale'
+Plug 'kien/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'morhetz/gruvbox'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'majutsushi/tagbar'
+Plug 'fatih/vim-go'
 
-call vundle#end() " required by vundle
-filetype plugin indent on " required by vundle
+call plug#end()
 
-set backupdir=~/vimfiles/tmpfiles
-set directory=~/vimfiles/tmpfiles
+
+set backupdir=~/.vimtmp/
+set directory=~/.vimtmp/
 
 " size of a hard tabstop
 set tabstop=4
@@ -55,7 +51,6 @@ map <S-Tab> :tabprevious<CR>
 
 " Colorscheme
 set t_Co=256
-syntax enable
 set background=dark
 colorscheme gruvbox
 
