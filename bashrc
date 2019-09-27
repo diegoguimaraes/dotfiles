@@ -1,3 +1,16 @@
+# MACOSX
+# add a "gnubin" directory to your PATH
+if hash brew 2> /dev/null; then
+    BREW_PREFIX="$(brew --prefix)"
+else
+    BREW_PREFIX=""
+fi
+
+if [[ -d "${BREW_PREFIX}/opt/coreutils/libexec/" ]]; then
+    export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
+    export MANPATH="${BREW_PREFIX}/opt/coreutils/libexec/gnuman:$MANPATH"
+fi
+
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
@@ -55,9 +68,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-# MACOSX
-# add a "gnubin" directory to your PATH
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 # Aliases
 alias ls="ls --color=always"
