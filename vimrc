@@ -13,6 +13,12 @@ Plug 'fatih/vim-go'
 
 call plug#end()
 
+if isdirectory(expand($HOME . '/.vim/bundle/gruvbox/'))
+    " Colorscheme
+    set t_Co=256
+    set background=dark
+    colorscheme gruvbox
+endif
 
 set backupdir=~/.vimtmp/
 set directory=~/.vimtmp/
@@ -48,11 +54,6 @@ set hlsearch incsearch
 " Tab navigation
 map <Tab> :tabnext<CR>
 map <S-Tab> :tabprevious<CR>
-
-" Colorscheme
-set t_Co=256
-set background=dark
-colorscheme gruvbox
 
 " Show path/file name on the bottom of the window
 set ls=2
