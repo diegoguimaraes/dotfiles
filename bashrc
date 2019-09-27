@@ -71,3 +71,6 @@ eval "$(pyenv init -)"
 
 # Aliases
 alias ls="ls --color=always"
+
+# Pulse secure hack
+alias pulse-secure="nohup /Applications/Pulse\ Secure.app/Contents/Plugins/JamUI/PulseTray.app/Contents/MacOS/PulseTray &"
