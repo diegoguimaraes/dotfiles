@@ -11,12 +11,16 @@ if [[ -d "${BREW_PREFIX}/opt/coreutils/libexec/" ]]; then
     export MANPATH="${BREW_PREFIX}/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
+# Change man path to look for gnu-binaries first
+export MANPATH=/usr/local/share/man/:$MANPATH
+
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
 export PS1="\u@ \[\e[00;1m\]\W\[\e[32;1m\]\$(parse_git_branch)\[\033[00m\] $ "
 
+# Bash completion
 if [[ -f $(brew --prefix)/etc/bash_completion ]]; then
     # shellcheck source=/dev/null
     . "$(brew --prefix)/etc/bash_completion"
@@ -24,9 +28,6 @@ fi
 
 # ipython editor
 export EDITOR="/usr/local/bin/vim"
-
-# Bash completion
-[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
 # avoid duplicates in history
 export HISTCONTROL=ignoredups:erasedups
