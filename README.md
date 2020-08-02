@@ -1,9 +1,3 @@
 # Dotfiles for local environment
 
-## Vim
-
-## Tmux
-
-It requires [Tmux plugin manager][tmux-tpm].
-
-[tmux-tpm]: https://github.com/tmux-plugins/tpm
+Run `make setup` to setup vim, tmux and bash configuration files.
