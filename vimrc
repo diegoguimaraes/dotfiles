@@ -5,9 +5,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
 Plug 'kien/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'morhetz/gruvbox'
 Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'fatih/vim-go'
 Plug 'jceb/vim-orgmode'
@@ -15,10 +13,8 @@ Plug 'vim-scripts/taglist.vim' " vim-orgmode related
 Plug 'tpope/vim-speeddating' " vim-orgmode related
 Plug 'vim-scripts/utl.vim'  " vim-orgmode related
 Plug 'inkarkat/vim-SyntaxRange'  " vim-orgmode related
-Plug 'dhruvasagar/vim-table-mode'
 Plug 'sainnhe/gruvbox-material'
 Plug 'edkolev/tmuxline.vim'
-Plug 'guns/xterm-color-table.vim'
 
 call plug#end()
 filetype plugin on
@@ -33,7 +29,7 @@ set background=dark
 set t_Co=256
 colorscheme gruvbox-material
 
-" Override theme colors
+" Override global theme colors
 hi Comment cterm=NONE term=bold ctermfg=245 guifg=#928374
 hi clear Todo
 hi Todo    term=bold cterm=bold ctermfg=175 gui=bold guifg=#dadada
@@ -55,7 +51,7 @@ set directory=~/.vimtmp/
 " size of a hard tabstop
 set tabstop=4
 
-" size of an "indent"
+" Global indent size
 set shiftwidth=4
 
 " a combination of spaces and tabs are used to simulate tab stops at a width
@@ -64,7 +60,6 @@ set softtabstop=4
 
 " make "tab" insert indents insted of tabs at the beginning of a line
 " always uses spaces instead of tab characters
-" auto indent
 set smarttab expandtab autoindent
 
 " utf8
@@ -91,27 +86,21 @@ set foldlevel=20
 let g:ctrlp_working_path_mode = 'ra'
 
 " disable arrow navigation keys in Normal mode
-map <Left> <Nop>
-map <Right> <Nop>
-map <Up> <Nop>
-map <Down> <Nop>
+noremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
 nnoremap <expr> <Up> ((bufname("%") is# "[Command Line]")?("\<Up>"):(""))
 
 " workaround to read alt key press on gnome-terminal
 set ttimeout ttimeoutlen=500
 
 " Specific filetypes ident
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2
-autocmd FileType yml setlocal ts=2 sts=2 sw=2
-autocmd FileType org setlocal ts=2 sts=2 sw=2
 
 " Mac backspace / Fix default vim deletion behavior
 set backspace=indent,eol,start
 
-" leader key
+" Leader key
 let mapleader = ","
-
-" Local leader key for orgmode
 let maplocalleader = ","
 
 " close NERDTree after a file is opened
@@ -123,7 +112,7 @@ let NERDTreeShowHidden=1
 " Toggle NERDTree
 nmap <silent> <leader>k :NERDTreeToggle<cr>
 
-" expand to the path of the file in the current buffer
+" Expand to the path of the file in the current buffer
 nmap <silent> <leader>y :NERDTreeFind<cr>
 
 " Ignore files
@@ -168,7 +157,6 @@ augroup HelpInTabs
     autocmd BufEnter  *.txt   call HelpInNewTab()
 augroup END
 
-"Only apply to help files...
 function! HelpInNewTab ()
     if &buftype == 'help'
         "Convert the help window to a tab...
@@ -190,17 +178,12 @@ nmap <silent> <BS> :nohlsearch<CR>
 " https://vim.fandom.com/wiki/Insert_current_date_or_time
 nnoremap <F5> "=strftime("%a, %d %b %Y %H:%M:%S %z")<CR>P
 
-" Table plugin
-let g:table_mode_header_fillchar='='
-let g:table_mode_corner='|'
-"
-" Automatically enable Spell in specific filetypes
+" Automatically enable Spell for mardown and gitcommit files
 augroup filetypedetect
     autocmd FileType markdown,gitcommit setlocal spell
 augroup END
 
-
-" TMUX integration
+" TMUX integration customizations
 let g:tmuxline_theme = 'powerline'
 let g:tmuxline_status_justify = 'left'
 let g:tmuxline_preset = {
@@ -213,6 +196,8 @@ let g:tmuxline_preset = {
       \'options' : {'message-style' : 'fg=colour235, bg=colour252, bold'},
       \}
 
+" Reload tmuxline and tmux conf when entering vim to get the
+" customizations loaded properly
 if exists('$TMUX')
     autocmd VimEnter *
         \ if exists(':Tmuxline') |
