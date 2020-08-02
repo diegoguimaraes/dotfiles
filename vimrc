@@ -10,15 +10,44 @@ Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'fatih/vim-go'
+Plug 'jceb/vim-orgmode'
+Plug 'vim-scripts/taglist.vim' " vim-orgmode related
+Plug 'tpope/vim-speeddating' " vim-orgmode related
+Plug 'vim-scripts/utl.vim'  " vim-orgmode related
+Plug 'inkarkat/vim-SyntaxRange'  " vim-orgmode related
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'sainnhe/gruvbox-material'
+Plug 'edkolev/tmuxline.vim'
+Plug 'guns/xterm-color-table.vim'
 
 call plug#end()
+filetype plugin on
 
-if isdirectory(expand($HOME . '/.vim/bundle/gruvbox/'))
-    " Colorscheme
-    set t_Co=256
-    set background=dark
-    colorscheme gruvbox
+if has('termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
 endif
+
+set background=dark
+set t_Co=256
+colorscheme gruvbox-material
+
+" Override theme colors
+hi Comment cterm=NONE term=bold ctermfg=245 guifg=#928374
+hi clear Todo
+hi Todo    term=bold cterm=bold ctermfg=175 gui=bold guifg=#dadada
+hi hyperlink term=underline cterm=underline ctermfg=109 guifg=#83a598
+hi Folded cterm=bold gui=bold
+
+" Airline settings
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline_theme='gruvbox_material'
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tmuxline#enabled = 1
 
 set backupdir=~/.vimtmp/
 set directory=~/.vimtmp/
@@ -40,10 +69,6 @@ set smarttab expandtab autoindent
 
 " utf8
 set encoding=utf-8 fileencoding=utf8
-
-" moving tabs
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
 
 " line numbers
 set number
@@ -72,23 +97,13 @@ map <Up> <Nop>
 map <Down> <Nop>
 nnoremap <expr> <Up> ((bufname("%") is# "[Command Line]")?("\<Up>"):(""))
 
-" Airline settings
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline_theme='base16_monokai'
-let g:airline_powerline_fonts=1
-
 " workaround to read alt key press on gnome-terminal
 set ttimeout ttimeoutlen=500
-
-" Python syntax
-let g:python_self_cls_highlight = 1
 
 " Specific filetypes ident
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2
 autocmd FileType yml setlocal ts=2 sts=2 sw=2
+autocmd FileType org setlocal ts=2 sts=2 sw=2
 
 " Mac backspace / Fix default vim deletion behavior
 set backspace=indent,eol,start
@@ -96,10 +111,8 @@ set backspace=indent,eol,start
 " leader key
 let mapleader = ","
 
-" Leader Mappings
-nmap <leader>z :call VimuxRunCommand("make test")<cr>
-nmap <leader>r :call VimuxRunCommand("make run")<cr>
-nmap <leader>p :call VimuxRunCommand("make lint")<cr>
+" Local leader key for orgmode
+let maplocalleader = ","
 
 " close NERDTree after a file is opened
 let g:NERDTreeQuitOnOpen=1
@@ -138,9 +151,15 @@ nmap <silent> <leader>t :TagbarOpen jf<CR>
 vnoremap <expr> // 'y/\V'.escape(@",'\').'<CR>'
 
 " A.L.E
-" let g:ale_lint_on_text_changed="normal"
+let g:ale_lint_on_text_changed="normal"
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+" Linters
+let g:ale_linters = {'yaml': ['yamllint',]}
+let g:ale_linters_explicit = 1
+let g:ale_yaml_yamllint_options =
+    \'-d "{extends: default, rules: {line-length: {max: 119, level: warning}}}"'
 
 " Make :help appear in a full-screen tab, instead of a window
 "Only apply to .txt files...
@@ -166,3 +185,41 @@ set smartcase
 
 " Make delete key in Normal mode remove the persistently highlighted matches
 nmap <silent> <BS> :nohlsearch<CR>
+
+" Print current date
+" https://vim.fandom.com/wiki/Insert_current_date_or_time
+nnoremap <F5> "=strftime("%a, %d %b %Y %H:%M:%S %z")<CR>P
+
+" Table plugin
+let g:table_mode_header_fillchar='='
+let g:table_mode_corner='|'
+"
+" Automatically enable Spell in specific filetypes
+augroup filetypedetect
+    autocmd FileType markdown,gitcommit setlocal spell
+augroup END
+
+
+" TMUX integration
+let g:tmuxline_theme = 'powerline'
+let g:tmuxline_status_justify = 'left'
+let g:tmuxline_preset = {
+      \'a'      : '#S',
+      \'cwin'   : ['#I', '#W', '#{?window_zoomed_flag,Z,}'],
+      \'win'    : ['#I', '#W'],
+      \'y'      : ['%H:%M', '%d-%m-%Y'],
+      \'x'      : ['#{ssh_status_color}#(#{SSH})#{reset_color}', 'RAM #{ram_icon} #{ram_percentage}', 'CPU #{cpu_icon} #{cpu_percentage}'],
+      \'z'      : '#H',
+      \'options' : {'message-style' : 'fg=colour235, bg=colour252, bold'},
+      \}
+
+if exists('$TMUX')
+    autocmd VimEnter *
+        \ if exists(':Tmuxline') |
+            \ exe ':Tmuxline' |
+            \ silent exec "!tmux source ~/.tmux.conf" |
+        \ endif
+endif
+
+" ORGMODE Configuration
+" ftplugin -> ~/.vim/ftplugin/org.vim
