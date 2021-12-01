@@ -1,4 +1,6 @@
 " ORGMODE
+autocmd BufEnter *.org setlocal ts=2 sts=2 sw=2
+
 let g:org_agenda_files=['~/org/index.org']
 let g:org_todo_keywords = [['TODO(t)', 'DONE(d)', 'WIP(w)', 'CANCELED(c)', 'BLOCKED(b)', 'UNPLANNED(u)']]
 let g:org_heading_highlight_colors = ['Title', 'Constant', 'Identifier', 'Statement', 'PreProc', 'Type', 'Special']
