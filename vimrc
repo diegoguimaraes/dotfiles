@@ -146,7 +146,6 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " Linters
 let g:ale_linters = {'yaml': ['yamllint',]}
-let g:ale_linters_explicit = 1
 let g:ale_yaml_yamllint_options =
     \'-d "{extends: default, rules: {line-length: {max: 119, level: warning}}}"'
 
@@ -180,7 +179,7 @@ nnoremap <F5> "=strftime("%a, %d %b %Y %H:%M:%S %z")<CR>P
 
 " Automatically enable Spell for mardown and gitcommit files
 augroup filetypedetect
-    autocmd FileType markdown,gitcommit setlocal spell
+    autocmd FileType gitcommit setlocal spell
 augroup END
 
 " TMUX integration customizations
