@@ -67,11 +67,10 @@ fi
 # PyEnv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+eval "$(pyenv init --path)"
 
 
 # Aliases
 alias ls="ls --color=always"
 
-# Pulse secure hack
-alias pulse-secure="nohup /Applications/Pulse\ Secure.app/Contents/Plugins/JamUI/PulseTray.app/Contents/MacOS/PulseTray &"
+export BASH_SILENCE_DEPRECATION_WARNING=1
