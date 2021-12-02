@@ -1,11 +1,14 @@
-# MACOSX
-# add a "gnubin" directory to your PATH
+# Add Homebrew to PATH
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 if hash brew 2> /dev/null; then
     BREW_PREFIX="$(brew --prefix)"
 else
     BREW_PREFIX=""
 fi
 
+# Add "gnubin" directory to PATH so that GNU binaries have a precedence
+# on BSD binaries
 if [[ -d "${BREW_PREFIX}/opt/coreutils/libexec/" ]]; then
     export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
     export MANPATH="${BREW_PREFIX}/opt/coreutils/libexec/gnuman:$MANPATH"
@@ -68,7 +71,6 @@ fi
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
-
 
 # Aliases
 alias ls="ls --color=always"
