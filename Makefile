@@ -25,4 +25,7 @@ bash:
 	ln -s $(PWD)/bashrc ~/.bashrc || true
 	ln -s $(PWD)/bashrc ~/.bashprofile || true
 
-setup: vim tmux bash
+gitconfig:
+	ln -s $(PWD)/gitconfig ~/.gitconfig || true
+
+setup: vim tmux bash gitconfig

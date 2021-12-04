@@ -1,0 +1,16 @@
+[core]
+	editor = vim
+[alias]
+	s = status
+	co = checkout
+[user]
+	name = Diego Guimaraes
+    email = diegaogs@gmail.com
+
+[includeIf "gitdir:~/work/git/"]
+    path = ~/work/git/.gitconfig
+
+# ~/work/.gitconfig
+#[user]
+#   name = me
+#   email = me@company.com
