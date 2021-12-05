@@ -190,7 +190,7 @@ let g:tmuxline_preset = {
       \'cwin'   : ['#I', '#W', '#{?window_zoomed_flag,Z,}'],
       \'win'    : ['#I', '#W'],
       \'y'      : ['%H:%M', '%d-%m-%Y'],
-      \'x'      : ['#{ssh_status_color}#(#{SSH})#{reset_color}', 'RAM #{ram_icon} #{ram_percentage}', 'CPU #{cpu_icon} #{cpu_percentage}'],
+      \'x'      : ['#{ssh_status_color}#(#{SSH})#{reset_color}', '#(tmux-mem-cpu-load -q -m 0 -a 0 -t 0 -g 0 --interval 2)'],
       \'z'      : '#H',
       \'options' : {'message-style' : 'fg=colour235, bg=colour252, bold'},
       \}
