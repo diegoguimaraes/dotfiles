@@ -183,14 +183,14 @@ augroup filetypedetect
 augroup END
 
 " TMUX integration customizations
-let g:tmuxline_theme = 'powerline'
+let g:tmuxline_theme = 'zenburn'
 let g:tmuxline_status_justify = 'left'
 let g:tmuxline_preset = {
       \'a'      : '#S',
       \'cwin'   : ['#I', '#W', '#{?window_zoomed_flag,Z,}'],
       \'win'    : ['#I', '#W'],
       \'y'      : ['%H:%M', '%d-%m-%Y'],
-      \'x'      : ['#{ssh_status_color}#(#{SSH})#{reset_color}', '#(tmux-mem-cpu-load -q -m 0 -a 0 -t 0 -g 0 --interval 2)'],
+      \'x'      : ['#(tmux-mem-cpu-load -q -m 0 -a 0 -t 0 -g 0 --interval 2)'],
       \'z'      : '#H',
       \'options' : {'message-style' : 'fg=colour235, bg=colour252, bold'},
       \}
