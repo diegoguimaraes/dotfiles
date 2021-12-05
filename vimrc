@@ -183,7 +183,6 @@ augroup filetypedetect
 augroup END
 
 " TMUX integration customizations
-let g:tmuxline_theme = 'zenburn'
 let g:tmuxline_status_justify = 'left'
 let g:tmuxline_preset = {
       \'a'      : '#S',
@@ -194,6 +193,17 @@ let g:tmuxline_preset = {
       \'z'      : '#H',
       \'options' : {'message-style' : 'fg=colour235, bg=colour252, bold'},
       \}
+let g:tmuxline_theme = {
+    \   'a'    : [ 000, 255 ],
+    \   'b'    : [ 253, 239 ],
+    \   'c'    : [ 244, 236 ],
+    \   'x'    : [ 244, 236 ],
+    \   'y'    : [ 253, 239 ],
+    \   'z'    : [ 232, 231 ],
+    \   'win'  : [ 231, 236 ],
+    \   'cwin' : [ 232, 231, "bold" ],
+    \   'bg'   : [ 244, 236 ],
+    \ }
 
 " Reload tmuxline and tmux conf when entering vim to get the
 " customizations loaded properly
