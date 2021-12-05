@@ -7,11 +7,16 @@ else
     BREW_PREFIX=""
 fi
 
+# Add Homebrew binaries to PATH
+export PATH="${BREW_PREFIX}/bin/:$PATH"
+
 # Add "gnubin" directory to PATH so that GNU binaries have a precedence
 # on BSD binaries
 if [[ -d "${BREW_PREFIX}/opt/coreutils/libexec/" ]]; then
     export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
+    export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
     export MANPATH="${BREW_PREFIX}/opt/coreutils/libexec/gnuman:$MANPATH"
+    export MANPATH="${BREW_PREFIX}/opt/grep/libexec/gnuman:$MANPATH"
 fi
 
 # Change man path to look for gnu-binaries first
@@ -76,3 +81,6 @@ eval "$(pyenv init --path)"
 alias ls="ls --color=always"
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# Add ~/.local/bin to PATH
+export PATH="$PATH:$HOME/.local/bin"
