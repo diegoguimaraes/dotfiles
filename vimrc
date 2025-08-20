@@ -1,195 +1,241 @@
+" Optimized vimrc - Performance and efficiency improvements
+" =======================================================
+
+" Plugin Management
 call plug#begin('~/.vim/bundle')
 
-Plug 'gmarik/Vundle.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'w0rp/ale'
-Plug 'kien/ctrlp.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'bling/vim-airline'
-Plug 'majutsushi/tagbar'
-Plug 'fatih/vim-go'
-Plug 'jceb/vim-orgmode'
-Plug 'vim-scripts/taglist.vim' " vim-orgmode related
-Plug 'tpope/vim-speeddating' " vim-orgmode related
-Plug 'vim-scripts/utl.vim'  " vim-orgmode related
-Plug 'inkarkat/vim-SyntaxRange'  " vim-orgmode related
+" Core functionality
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'                    " Modern fuzzy finder (replaces CtrlP)
+Plug 'dense-analysis/ale'                  " Updated ALE repo
+Plug 'tpope/vim-fugitive'                  " Git integration
+
+" UI enhancements  
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'preservim/tagbar'                    " Updated tagbar repo
+
+" Language support
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+
+" Colorscheme (single theme)
 Plug 'sainnhe/gruvbox-material'
+
+" Tmux integration
 Plug 'edkolev/tmuxline.vim'
 
-call plug#end()
-filetype plugin on
+" Org-mode support (consolidated)
+Plug 'jceb/vim-orgmode'
+Plug 'tpope/vim-speeddating'               " Required for org-mode
+Plug 'vim-scripts/utl.vim'                 " Required for org-mode
+Plug 'inkarkat/vim-SyntaxRange'            " Required for org-mode
 
+call plug#end()
+
+" Basic Vim Settings
+" ==================
+filetype plugin indent on
+syntax enable
+
+" Terminal and colors
 if has('termguicolors')
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
 endif
-
 set background=dark
-set t_Co=256
 colorscheme gruvbox-material
 
-" Override global theme colors
-hi Comment cterm=NONE term=bold ctermfg=245 guifg=#928374
-hi clear Todo
-hi Todo    term=bold cterm=bold ctermfg=175 gui=bold guifg=#dadada
-hi hyperlink term=underline cterm=underline ctermfg=109 guifg=#83a598
-hi Folded cterm=bold gui=bold
+" Performance optimizations
+set lazyredraw                             " Don't redraw during macros
+set ttyfast                                " Faster terminal connection
+set ttimeout ttimeoutlen=10                " Faster escape sequences
 
-" Airline settings
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline_theme='gruvbox_material'
-let g:airline_powerline_fonts=1
-let g:airline#extensions#tmuxline#enabled = 1
+" File handling
+set backupdir=~/.vimtmp//                  " Double slash for unique filenames
+set directory=~/.vimtmp//
+set undodir=~/.vimtmp//
+set undofile                               " Persistent undo
 
-set backupdir=~/.vimtmp/
-set directory=~/.vimtmp/
+" Indentation (consistent settings)
+set tabstop=4 shiftwidth=4 softtabstop=4
+set expandtab smarttab autoindent
+set smartindent                            " Better auto-indentation
 
-" size of a hard tabstop
-set tabstop=4
-
-" Global indent size
-set shiftwidth=4
-
-" a combination of spaces and tabs are used to simulate tab stops at a width
-" other than the (hard)tabstop
-set softtabstop=4
-
-" make "tab" insert indents insted of tabs at the beginning of a line
-" always uses spaces instead of tab characters
-set smarttab expandtab autoindent
-
-" utf8
-set encoding=utf-8 fileencoding=utf8
-
-" line numbers
-set number
-
-" highlight search matches and incremental search
+" Search and navigation
+set number                                 " Line numbers
 set hlsearch incsearch
+set ignorecase smartcase
+set wildmenu wildmode=list:longest,full    " Better command completion
 
-" Tab navigation
-map <Tab> :tabnext<CR>
-map <S-Tab> :tabprevious<CR>
-
-" Show path/file name on the bottom of the window
-set ls=2
-
-" Enable folding
-set foldmethod=manual
-set foldlevel=20
-
-" ctrl-p plugin
-let g:ctrlp_working_path_mode = 'ra'
-
-" disable arrow navigation keys in Normal mode
-noremap <Right> <Nop>
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-nnoremap <expr> <Up> ((bufname("%") is# "[Command Line]")?("\<Up>"):(""))
-
-" workaround to read alt key press on gnome-terminal
-set ttimeout ttimeoutlen=500
-
-" Specific filetypes ident
-
-" Mac backspace / Fix default vim deletion behavior
+" UI improvements
+set laststatus=2                           " Always show status line
+set showcmd                                " Show command in status line
+set cursorline                             " Highlight current line
+set scrolloff=3                            " Keep context when scrolling
 set backspace=indent,eol,start
 
-" Leader key
+" Encoding
+set encoding=utf-8
+
+" Folding
+set foldmethod=syntax foldlevelstart=20    " Syntax-based folding, start open
+
+" Clipboard (macOS)
+if has('mac')
+    set clipboard=unnamed
+endif
+
+" Key Mappings
+" ============
 let mapleader = ","
 let maplocalleader = ","
 
-" close NERDTree after a file is opened
-let g:NERDTreeQuitOnOpen=1
+" Navigation improvements
+nnoremap j gj
+nnoremap k gk
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
-" show hidden files in NERDTree
-let NERDTreeShowHidden=1
+" Clear search highlighting
+nnoremap <silent> <leader><space> :nohlsearch<CR>
 
-" Toggle NERDTree
-nmap <silent> <leader>k :NERDTreeToggle<cr>
+" Better regex search
+nnoremap / /\v
+vnoremap / /\v
 
-" Expand to the path of the file in the current buffer
-nmap <silent> <leader>y :NERDTreeFind<cr>
+" Tab navigation
+nnoremap <Tab> :tabnext<CR>
+nnoremap <S-Tab> :tabprevious<CR>
 
-" Ignore files
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+" Quick save and quit
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
 
-" CtrlP ignore patterns
-let g:ctrlp_custom_ignore = {
-            \ 'dir': '\.git$\|node_modules$\|\.hg$\|\venv$|\venv$\',
-            \ 'file': '\.exe$\|\.so$'
-            \ }
-let g:ctrlp_show_hidden = 1
+" File browser (netrw)
+nnoremap <silent> <leader>y :Vex<CR>
 
-" Mac Clipboard issue
-set clipboard+=unnamed
-
-" TAGBAR
-nmap <F8> :TagbarToggle<CR>
-let g:tagbar_left=1
-let g:tagbar_compact=1
-
-nmap <silent> <leader>p :CtrlPTag<CR>
-nmap <silent> <leader>t :TagbarOpen jf<CR>
-
-" Search for visually selected text with //
-vnoremap <expr> // 'y/\V'.escape(@",'\').'<CR>'
-
-" A.L.E
-let g:ale_lint_on_text_changed="normal"
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-" Linters
-let g:ale_linters = {'yaml': ['yamllint',]}
-let g:ale_yaml_yamllint_options =
-    \'-d "{extends: default, rules: {line-length: {max: 119, level: warning}}}"'
-
-" Make :help appear in a full-screen tab, instead of a window
-"Only apply to .txt files...
-augroup HelpInTabs
+" Netrw settings and mappings
+augroup netrw_mapping
     autocmd!
-    autocmd BufEnter  *.txt   call HelpInNewTab()
+    autocmd FileType netrw nnoremap <buffer> <silent> <ESC> <C-w>c
 augroup END
 
-function! HelpInNewTab ()
+" Visual selection search
+vnoremap <silent> * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+
+function! s:VSetSearch(cmdtype)
+    let temp = @s
+    norm! gv"sy
+    let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+    let @s = temp
+endfunction
+
+" Plugin Configuration
+" ====================
+
+" FZF (replaces CtrlP)
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>f :Rg<CR>
+nnoremap <silent> <leader>t :Tags<CR>
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+
+" FZF fallbacks for systems without ripgrep
+if !executable('rg')
+    nnoremap <silent> <leader>f :Ag<CR>
+    if !executable('ag')
+        nnoremap <silent> <leader>f :grep -r "" . --include="*"<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+    endif
+endif
+
+
+" ALE Configuration (optimized)
+let g:ale_lint_on_text_changed = 'never'   " Only lint on save/enter
+let g:ale_lint_on_insert_leave = 1
+let g:ale_fix_on_save = 1
+let g:ale_linters = {
+\   'go': ['gopls', 'govet'],
+\   'yaml': ['yamllint'],
+\   'python': ['pylsp', 'mypy'],
+\}
+let g:ale_fixers = {
+\   'go': ['gofmt', 'goimports'],
+\   'python': ['black', 'isort'],
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
+
+nmap <silent> [e <Plug>(ale_previous_wrap)
+nmap <silent> ]e <Plug>(ale_next_wrap)
+
+" Airline Configuration
+let g:airline_theme = 'gruvbox_material'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tmuxline#enabled = 1
+
+" Tagbar
+nnoremap <silent> <F8> :TagbarToggle<CR>
+let g:tagbar_left = 1
+let g:tagbar_compact = 1
+let g:tagbar_autofocus = 1
+
+" Vim-Go (optimized settings)
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
+let g:go_rename_command = 'gopls'
+let g:go_fmt_command = 'goimports'
+let g:go_auto_type_info = 1
+
+" Essential highlighting only (performance)
+let g:go_highlight_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+
+" Autocommands
+" ============
+augroup vimrc_autocommands
+    autocmd!
+    
+    " Help in new tab
+    autocmd BufEnter *.txt call s:HelpInNewTab()
+    
+    " Language-specific settings
+    autocmd FileType gitcommit setlocal spell
+    autocmd FileType markdown setlocal spell wrap linebreak
+    autocmd FileType go setlocal tabstop=4 shiftwidth=4 noexpandtab
+    autocmd FileType yaml,html,css,javascript setlocal tabstop=2 shiftwidth=2
+    
+    " Remove trailing whitespace on save
+    autocmd BufWritePre * :%s/\s\+$//e
+    
+    " Return to last cursor position
+    autocmd BufReadPost * 
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
+        
+augroup END
+
+function! s:HelpInNewTab()
     if &buftype == 'help'
-        "Convert the help window to a tab...
-        execute "normal \<C-W>T"
+        execute "normal! \<C-W>T"
     endif
 endfunction
 
-" Use vim improved regex search
-nnoremap / /\v
-
-" Turn on case-insensitive matches (but only when pattern is all-lowercase)
-set ignorecase
-set smartcase
-
-" Make delete key in Normal mode remove the persistently highlighted matches
-nmap <silent> <BS> :nohlsearch<CR>
-
-" Print current date
-" https://vim.fandom.com/wiki/Insert_current_date_or_time
-nnoremap <F5> "=strftime("%a, %d %b %Y %H:%M:%S %z")<CR>P
-
-" Automatically enable Spell for mardown and gitcommit files
-augroup filetypedetect
-    autocmd FileType gitcommit setlocal spell
-augroup END
-
-" TMUX integration customizations
+" Tmuxline Configuration (original working setup with minimal fixes)
 let g:tmuxline_status_justify = 'left'
 let g:tmuxline_preset = {
       \'a'      : '#S',
       \'cwin'   : ['#I', '#W', '#{?window_zoomed_flag,Z,}'],
       \'win'    : ['#I', '#W'],
       \'y'      : ['%H:%M', '%d-%m-%Y'],
-      \'x'      : ['#(tmux-mem-cpu-load -q -m 0 -a 0 -t 0 -g 0 --interval 2)'],
+      \'x'      : ['#(tmux-mem-cpu-load -q -m 0 -a 0 -t 0 -g 0 --interval 3)'],
       \'z'      : '#H',
       \'options' : {'message-style' : 'fg=colour235, bg=colour252, bold'},
       \}
@@ -200,20 +246,31 @@ let g:tmuxline_theme = {
     \   'x'    : [ 244, 236 ],
     \   'y'    : [ 253, 239 ],
     \   'z'    : [ 232, 231 ],
-    \   'win'  : [ 231, 236 ],
+    \   'win'  : [ 231, 236, "none" ],
     \   'cwin' : [ 232, 231, "bold" ],
+    \   'last' : [ 231, 236, "none" ],
     \   'bg'   : [ 244, 236 ],
     \ }
 
-" Reload tmuxline and tmux conf when entering vim to get the
-" customizations loaded properly
+" Only reload tmuxline once when vim starts (prevents blinking)
 if exists('$TMUX')
-    autocmd VimEnter *
-        \ if exists(':Tmuxline') |
-            \ exe ':Tmuxline' |
-            \ silent exec "!tmux source ~/.tmux.conf" |
-        \ endif
+    augroup tmuxline_init
+        autocmd!
+        autocmd VimEnter * call timer_start(100, function('s:DelayedTmuxlineSetup'))
+    augroup END
 endif
 
-" ORGMODE Configuration
-" ftplugin -> ~/.vim/ftplugin/org.vim
+function! s:DelayedTmuxlineSetup(timer)
+    if exists(':Tmuxline')
+        try
+            silent! exe ':Tmuxline'
+            silent! call system("tmux source ~/.tmux.conf")
+        catch
+            " Silently ignore errors to prevent vim startup issues
+        endtry
+    endif
+endfunction
+
+" Custom theme overrides (minimal)
+highlight link Todo GruvboxYellowBold
+highlight link Comment GruvboxGray
