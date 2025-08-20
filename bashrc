@@ -3,7 +3,7 @@
 LC_ALL=en_US.UTF-8
 LANG=en_US.UTF-8
 
-# Add Homebrew to PATH
+# Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 if hash brew 2> /dev/null; then
@@ -12,11 +12,9 @@ else
     BREW_PREFIX=""
 fi
 
-# Add Homebrew binaries to PATH
 export PATH="${BREW_PREFIX}/bin/:$PATH"
 
-# Add "gnubin" directory to PATH so that GNU binaries have a precedence
-# on BSD binaries
+# GNU tools precedence over BSD
 if [[ -d "${BREW_PREFIX}/opt/coreutils/libexec/" ]]; then
     export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
     export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
@@ -24,48 +22,41 @@ if [[ -d "${BREW_PREFIX}/opt/coreutils/libexec/" ]]; then
     export MANPATH="${BREW_PREFIX}/opt/grep/libexec/gnuman:$MANPATH"
 fi
 
-# Change man path to look for gnu-binaries first
-export MANPATH=/usr/local/share/man/:$MANPATH
-
-parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
-
-export PS1="\u@ \[\e[00;1m\]\W\[\e[32;1m\]\$(parse_git_branch)\[\033[00m\] $ "
-
-# Bash completion
-if [[ -f $(brew --prefix)/etc/bash_completion ]]; then
-    # shellcheck source=/dev/null
-    . "$(brew --prefix)/etc/bash_completion"
+if [[ -n "${BREW_PREFIX}" ]]; then
+    export MANPATH="${BREW_PREFIX}/share/man:$MANPATH"
 fi
 
-# ipython editor
-export EDITOR="/usr/local/bin/vim"
+# Starship prompt (replaces custom git branch parsing)
+if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init bash)"
+else
+    # Fallback to simple prompt if starship not available
+    export PS1="\u@ \[\e[00;1m\]\W\[\033[00m\] $ "
+fi
 
-# avoid duplicates in history
-export HISTCONTROL=ignoredups:erasedups
+if [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/etc/bash_completion" ]]; then
+    # shellcheck source=/dev/null
+    . "${BREW_PREFIX}/etc/bash_completion"
+fi
 
-# append history entries..
+# History configuration
+export HISTCONTROL=ignoreboth:erasedups
+
 shopt -s histappend
 
-# Bash history size
 HISTSIZE= 
 HISTFILESIZE=
 
-# Bash history avoid duplicate entries
-export HISTCONTROL="ignoreboth:erasedups"
+# Optimized history sharing (reduced overhead)
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
-# After each command, save and reload history
-# History made available through all tty
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-
-# Vi mode for interactive terminal:
+# Vi mode for interactive terminal
 if [[ $- == *i* ]]; then
     bind -m vi-insert '\C-l':clear-screen
     set -o vi
 fi
 
-# fzf should be configured after vi mode:
+# FZF configuration
 if [[ -f "$HOME/.fzf.bash" ]]; then
     # shellcheck source=/dev/null
     source "$HOME/.fzf.bash"
@@ -77,30 +68,41 @@ if [[ -f "$HOME/.fzf.bash" ]]; then
     export FZF_CTRL_T_OPTS="--preview 'head -100 {}'"
 fi
 
-# PyEnv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
+# PyEnv (lazy loading for performance)
+if [[ -d "$HOME/.pyenv" ]]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    
+    # Lazy load pyenv - only initialize when first used
+    pyenv() {
+        unset -f pyenv
+        eval "$(command pyenv init --path)"
+        eval "$(command pyenv init -)"
+        pyenv "$@"
+    }
+fi
 
-# Aliases
 alias ls="ls --color=always"
 alias zaws=zalando-aws-cli
 export ZKUBECTL_USE_OKTA=false
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
-# Add ~/.local/bin to PATH
+# User binaries
 export PATH="$PATH:$HOME/.local/bin"
 
-# K9s editor vim
-export EDITOR=/opt/homebrew/bin/vim
+# Editor
+if [[ -n "${BREW_PREFIX}" && -x "${BREW_PREFIX}/bin/vim" ]]; then
+    export EDITOR="${BREW_PREFIX}/bin/vim"
+else
+    export EDITOR="vim"
+fi
 
-# Go path
-#export GOPATH=/usr/local/go
-export GOPATH=/Users/dguimaraesso/go
+# Go
+export GOPATH="$HOME/go"
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# Bun JavaScript runtime
+if [[ -d "$HOME/.bun" ]]; then
+    export BUN_INSTALL="$HOME/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
+fi
