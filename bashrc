@@ -1,3 +1,8 @@
+# Language
+#LANG=C
+LC_ALL=en_US.UTF-8
+LANG=en_US.UTF-8
+
 # Add Homebrew to PATH
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
@@ -79,8 +84,23 @@ eval "$(pyenv init --path)"
 
 # Aliases
 alias ls="ls --color=always"
+alias zaws=zalando-aws-cli
+export ZKUBECTL_USE_OKTA=false
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # Add ~/.local/bin to PATH
 export PATH="$PATH:$HOME/.local/bin"
+
+# K9s editor vim
+export EDITOR=/opt/homebrew/bin/vim
+
+# Go path
+#export GOPATH=/usr/local/go
+export GOPATH=/Users/dguimaraesso/go
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
