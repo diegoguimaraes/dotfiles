@@ -1,0 +1,54 @@
+# Vim mode
+set-window-option -g mode-keys vi
+
+# Pane switching
+bind k selectp -U # switch to panel Up
+bind j selectp -D # switch to panel Down
+bind h selectp -L # switch to panel Left
+bind l selectp -R # switch to panel Right
+
+# move window
+bind-key -n C-S-Left swap-window -t -1
+bind-key -n C-S-Right swap-window -t +1
+
+# message text
+set-option -g message-style fg=colour235,bg=colour253,bold
+
+# split pane
+bind | split-window -h # Split panes horizontal
+bind - split-window -v # Split panes vertically
+
+# history size
+set-option -g history-limit 100000
+
+# Save history to a file
+# This file will be loaded when opening tmux
+set -g history-file ~/.tmux_history
+
+# Copy-paste integration
+set-option -g default-command "reattach-to-user-namespace -l bash"
+
+# Setup 'v' to begin selection as in Vim
+bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
+bind-key -T copy-mode-vi 'y' send-keys -X copy-pipe-and-cancel 'reattach-to-user-namespace pbcopy'
+
+# Update default binding of `Enter` to also use copy-pipe
+unbind -T copy-mode-vi 'Enter'
+bind-key -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy"
+
+# Bind ']' to use pbpaste
+bind ] run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux paste-buffer"
+
+# Status left length size
+set -g status-left-length 15
+
+set -g status-interval 5
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'thewtex/tmux-mem-cpu-load'  # requires cmake installed
+set -g @plugin 'soyuka/tmux-current-pane-hostname'
+
+# Initialize
+run '~/.tmux/plugins/tpm/tpm'

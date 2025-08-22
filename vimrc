@@ -10,7 +10,7 @@ Plug 'junegunn/fzf.vim'                    " Modern fuzzy finder (replaces CtrlP
 Plug 'dense-analysis/ale'                  " Updated ALE repo
 Plug 'tpope/vim-fugitive'                  " Git integration
 
-" UI enhancements  
+" UI enhancements
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'preservim/tagbar'                    " Updated tagbar repo
@@ -29,6 +29,9 @@ Plug 'jceb/vim-orgmode'
 Plug 'tpope/vim-speeddating'               " Required for org-mode
 Plug 'vim-scripts/utl.vim'                 " Required for org-mode
 Plug 'inkarkat/vim-SyntaxRange'            " Required for org-mode
+
+" Org-mode Capture Configuration
+let g:org_capture_templates_file = '~/gtd/capture_templates.yaml'
 
 call plug#end()
 
@@ -201,25 +204,25 @@ let g:go_highlight_operators = 1
 " ============
 augroup vimrc_autocommands
     autocmd!
-    
+
     " Help in new tab
     autocmd BufEnter *.txt call s:HelpInNewTab()
-    
+
     " Language-specific settings
     autocmd FileType gitcommit setlocal spell
     autocmd FileType markdown setlocal spell wrap linebreak
     autocmd FileType go setlocal tabstop=4 shiftwidth=4 noexpandtab
     autocmd FileType yaml,html,css,javascript setlocal tabstop=2 shiftwidth=2
-    
+
     " Remove trailing whitespace on save
     autocmd BufWritePre * :%s/\s\+$//e
-    
+
     " Return to last cursor position
-    autocmd BufReadPost * 
+    autocmd BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
         \   exe "normal! g`\"" |
         \ endif
-        
+
 augroup END
 
 function! s:HelpInNewTab()
