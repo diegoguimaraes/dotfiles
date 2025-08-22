@@ -44,7 +44,7 @@ export HISTCONTROL=ignoreboth:erasedups
 
 shopt -s histappend
 
-HISTSIZE= 
+HISTSIZE=
 HISTFILESIZE=
 
 # Optimized history sharing (reduced overhead)
@@ -72,7 +72,7 @@ fi
 if [[ -d "$HOME/.pyenv" ]]; then
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
-    
+
     # Lazy load pyenv - only initialize when first used
     pyenv() {
         unset -f pyenv
@@ -84,6 +84,8 @@ fi
 
 alias ls="ls --color=always"
 alias zaws=zalando-aws-cli
+alias tig="lazygit"
+alias lg="lazygit"
 export ZKUBECTL_USE_OKTA=false
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
