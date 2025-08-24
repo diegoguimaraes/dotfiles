@@ -33,7 +33,8 @@ Plug 'inkarkat/vim-SyntaxRange'            " Required for org-mode
 " Org-mode Capture Configuration
 let g:org_capture_templates_file = '~/gtd/capture_templates.yaml'
 " Org-mode Agenda Configuration
-let g:org_agenda_files = ['~/gtd/*.org']
+let g:org_agenda_files = ['~/orgs/*.org']
+
 
 call plug#end()
 
