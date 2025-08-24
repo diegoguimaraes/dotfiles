@@ -1,5 +1,6 @@
 [core]
 	editor = vim
+	pager = delta
 [alias]
 	s = status
 	co = checkout
@@ -14,3 +15,33 @@
 #[user]
 #   name = me
 #   email = me@company.com
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	# Gruvbox theme settings
+	syntax-theme = Monokai Extended
+	line-numbers = true
+	decorations = true
+	file-style = bold yellow ul
+	file-decoration-style = none
+	hunk-header-decoration-style = cyan box ul
+
+	# Gruvbox colors
+	plus-style = syntax "#8ec07c"
+	minus-style = syntax "#fb4934"
+	plus-emph-style = syntax "#a3be8c"
+	minus-emph-style = syntax "#d08770"
+
+	# Line numbers
+	line-numbers-left-style = "#665c54"
+	line-numbers-right-style = "#665c54"
+	line-numbers-minus-style = "#fb4934"
+	line-numbers-plus-style = "#8ec07c"
+	line-numbers-zero-style = "#928374"
+
+	# General appearance
+	side-by-side = false
+	navigate = true
+	hyperlinks = false
