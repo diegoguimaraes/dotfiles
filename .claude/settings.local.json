@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(brew:*)",
+      "Bash(tmux source ~/.tmux.conf)",
+      "Bash(tmux:*)",
+      "Bash(git checkout -- tmux.conf)",
+      "Bash(echo:*)",
+      "Bash(source:*)",
+      "Bash(grep:*)",
+      "Bash(ps:*)",
+      "Bash(bash:*)",
+      "Bash(ln:*)",
+      "Bash(git add:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(defaults:*)",
+      "WebSearch",
+      "Bash(command:*)",
+      "Bash(starship:*)",
+      "Bash(cp:*)",
+      "Bash(git commit:*)",
+      "Bash(rm:*)",
+      "Bash(time:*)",
+      "Bash(mkdir:*)",
+      "Bash(lazygit:*)",
+      "Bash(nvim:*)",
+      "Bash(fc-list:*)",
+      "Bash(delta:*)",
+      "Bash(chmod:*)",
+      "Bash(cat:*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "/Users/dguimaraesso"
+    ]
+  }
+}

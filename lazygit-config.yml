@@ -1,0 +1,70 @@
+gui:
+  # Gruvbox Dark theme colors
+  theme:
+    activeBorderColor:
+      - '#fabd2f' # gruvbox yellow
+      - bold
+    inactiveBorderColor:
+      - '#504945' # gruvbox gray4
+    searchingActiveBorderColor:
+      - '#83a598' # gruvbox blue
+      - bold
+    optionsTextColor:
+      - '#83a598' # gruvbox blue
+    selectedLineBgColor:
+      - '#3c3836' # gruvbox dark1
+    inactiveViewSelectedLineBgColor:
+      - '#3c3836' # gruvbox dark1
+    cherryPickedCommitFgColor:
+      - '#8ec07c' # gruvbox green
+    cherryPickedCommitBgColor:
+      - '#3c3836' # gruvbox dark1
+    markedBaseCommitFgColor:
+      - '#fabd2f' # gruvbox yellow
+    markedBaseCommitBgColor:
+      - '#3c3836' # gruvbox dark1
+    unstagedChangesColor:
+      - '#fb4934' # gruvbox red
+    defaultFgColor:
+      - '#ebdbb2' # gruvbox light1
+  # Font and display settings
+  showIcons: false
+  nerdFontsVersion: "3"
+  showFileIcons: false
+  # UI improvements
+  showFileTree: true
+  showListFooter: true
+  showRandomTip: false
+  showBranchCommitHash: true
+  showBottomLine: true
+  showCommandLog: false
+  border: rounded
+  # Performance and behavior
+  mouseEvents: true
+  scrollHeight: 2
+  scrollPastBottom: true
+  # Panel layout
+  sidePanelWidth: 0.3333
+  expandFocusedSidePanel: false
+  mainPanelSplitMode: flexible
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+  # Git behavior
+  autoFetch: true
+  autoRefresh: true
+  parseEmoji: true
+  # Main branches
+  mainBranches:
+    - master
+    - main
+# Editor preference
+os:
+  editPreset: 'vim'
+customCommands:
+  - key: "<c-a>"
+    description: "generate AI commit message"
+    context: "files"
+    command: "/Users/dguimaraesso/github/dotfiles/scripts/ai-commit.sh"
+    output: terminal

@@ -28,4 +28,9 @@ bash:
 gitconfig:
 	ln -s $(PWD)/gitconfig ~/.gitconfig || true
 
-setup: vim tmux bash gitconfig
+lazygit:
+	mkdir -p "$$HOME/Library/Application Support/lazygit" || true
+	ln -s $(PWD)/lazygit-config.yml "$$HOME/Library/Application Support/lazygit/config.yml" || true
+	chmod +x $(PWD)/scripts/ai-commit.sh || true
+
+setup: vim tmux bash gitconfig lazygit
