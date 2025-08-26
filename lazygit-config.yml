@@ -64,7 +64,7 @@ os:
   editPreset: 'vim'
 customCommands:
   - key: "<c-a>"
-    description: "generate AI commit message"
+    description: "AI commit with dialog"
     context: "files"
-    command: "/Users/dguimaraesso/github/dotfiles/scripts/ai-commit.sh"
-    output: terminal
+    command: "/Users/dguimaraesso/github/dotfiles/scripts/ai-commit-prepare.sh"
+    loadingText: "generating AI commit message..."
