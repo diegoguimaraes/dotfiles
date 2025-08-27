@@ -40,6 +40,6 @@ if [ -z "$COMMIT_MESSAGE" ]; then
 fi
 
 # Save to the file that lazygit checks for pending commit messages
-echo "$COMMIT_MESSAGE" > .git/COMMIT_EDITMSG
+echo "$COMMIT_MESSAGE" > .git/LAZYGIT_PENDING_COMMIT
 
 echo "AI commit message generated! Press 'c' to open commit dialog."
