@@ -44,8 +44,8 @@ export HISTCONTROL=ignoreboth:erasedups
 
 shopt -s histappend
 
-HISTSIZE=
-HISTFILESIZE=
+HISTSIZE=-1
+HISTFILESIZE=-1
 
 # Optimized history sharing (reduced overhead)
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
