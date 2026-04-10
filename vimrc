@@ -240,7 +240,7 @@ let g:tmuxline_preset = {
       \'a'      : '#S',
       \'cwin'   : ['#I', '#W', '#{?window_zoomed_flag,Z,}'],
       \'win'    : ['#I', '#W'],
-      \'y'      : ['%H:%M', '%d-%m-%Y'],
+      \'y'      : ['%H:%M', '%d-%m-%Y (#%V)'],
       \'x'      : ['#(tmux-mem-cpu-load -q -m 0 -a 0 -t 0 -g 0 --interval 3)'],
       \'z'      : '#H',
       \'options' : {'message-style' : 'fg=colour235, bg=colour252, bold'},
