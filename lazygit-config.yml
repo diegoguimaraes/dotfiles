@@ -67,4 +67,4 @@ customCommands:
     description: "AI commit with dialog"
     context: "files"
     command: "/Users/dguimaraesso/github/dotfiles/scripts/ai-commit-prepare.sh"
-    loadingText: "generating AI commit message..."
+    loadingText: "Generating AI commit message..."

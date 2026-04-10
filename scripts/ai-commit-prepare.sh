@@ -42,4 +42,5 @@ fi
 # Save to the file that lazygit checks for pending commit messages
 echo "$COMMIT_MESSAGE" > .git/LAZYGIT_PENDING_COMMIT
 
-echo "AI commit message generated! Press 'c' to open commit dialog."
+# Automatically trigger the 'c' key in Lazygit
+osascript -e 'tell application "System Events" to keystroke "c"'
