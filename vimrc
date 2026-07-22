@@ -33,7 +33,20 @@ Plug 'inkarkat/vim-SyntaxRange'            " Required for org-mode
 " Org-mode Capture Configuration
 let g:org_capture_templates_file = '~/gtd/capture_templates.yaml'
 " Org-mode Agenda Configuration
-let g:org_agenda_files = ['~/orgs/*.org']
+let g:org_agenda_files = ['~/gtd/*.org']
+" Org-mode TODO keyword colors — ONHOLD in orange to distinguish from red level-4 headings
+let g:org_todo_keywords = ['TODO', 'WIP', 'ONHOLD', '|', 'DONE', 'CANCELED']
+let g:org_todo_keyword_faces = [
+  \ ['ONHOLD',   [':foreground #928374', ':weight bold']],
+  \ ['CANCELED', [':foreground #665c54']],
+  \ ]
+
+" Apply org keyword colors after colorscheme (colorscheme would override otherwise)
+augroup org_keyword_colors
+  autocmd!
+  autocmd ColorScheme,VimEnter * hi org_todo_keyword_ONHOLD   guifg=#928374 gui=bold
+  autocmd ColorScheme,VimEnter * hi org_todo_keyword_CANCELED guifg=#665c54 gui=strikethrough
+augroup END
 
 
 call plug#end()
@@ -210,6 +223,10 @@ augroup vimrc_autocommands
 
     " Help in new tab
     autocmd BufEnter *.txt call s:HelpInNewTab()
+
+    " Preserve fold state for org files across :e reloads (orgmode owns foldmethod)
+    autocmd BufWinLeave,BufWritePre *.org mkview
+    autocmd BufReadPost *.org silent! loadview | setlocal foldmethod=expr
 
     " Language-specific settings
     autocmd FileType gitcommit setlocal spell
