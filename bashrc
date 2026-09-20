@@ -33,7 +33,10 @@ else
     export PS1="\u@ \[\e[00;1m\]\W\[\033[00m\] $ "
 fi
 
-if [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/etc/bash_completion" ]]; then
+if [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/share/bash-completion/bash_completion" ]]; then
+    # shellcheck source=/dev/null
+    . "${BREW_PREFIX}/share/bash-completion/bash_completion"
+elif [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/etc/bash_completion" ]]; then
     # shellcheck source=/dev/null
     . "${BREW_PREFIX}/etc/bash_completion"
 fi
