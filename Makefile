@@ -23,7 +23,7 @@ tmux: tmux-links tmux-tpm
 
 bash:
 	ln -s $(PWD)/bashrc ~/.bashrc || true
-	ln -s $(PWD)/bashrc ~/.bashprofile || true
+	ln -s $(PWD)/bashrc ~/.bash_profile || true
 
 gitconfig:
 	ln -s $(PWD)/gitconfig ~/.gitconfig || true
