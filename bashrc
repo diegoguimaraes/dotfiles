@@ -33,12 +33,33 @@ else
     export PS1="\u@ \[\e[00;1m\]\W\[\033[00m\] $ "
 fi
 
-if [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/share/bash-completion/bash_completion" ]]; then
-    # shellcheck source=/dev/null
-    . "${BREW_PREFIX}/share/bash-completion/bash_completion"
-elif [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/etc/bash_completion" ]]; then
-    # shellcheck source=/dev/null
-    . "${BREW_PREFIX}/etc/bash_completion"
+# Shell completions
+# Homebrew bash-completion v2 requires Bash 4+. macOS /bin/bash is 3.2, so use
+# Homebrew Bash (/opt/homebrew/bin/bash) for full completion support.
+if (( BASH_VERSINFO[0] >= 4 )); then
+    if [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/share/bash-completion/bash_completion" ]]; then
+        # shellcheck source=/dev/null
+        . "${BREW_PREFIX}/share/bash-completion/bash_completion"
+    elif [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/etc/bash_completion" ]]; then
+        # shellcheck source=/dev/null
+        . "${BREW_PREFIX}/etc/bash_completion"
+    fi
+fi
+
+# Git completion is provided by Apple's Command Line Tools when using /usr/bin/git.
+if ! complete -p git >/dev/null 2>&1; then
+    if [[ -f "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]]; then
+        # shellcheck source=/dev/null
+        . "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash"
+    elif [[ -n "${BREW_PREFIX}" && -f "${BREW_PREFIX}/etc/bash_completion.d/git-completion.bash" ]]; then
+        # shellcheck source=/dev/null
+        . "${BREW_PREFIX}/etc/bash_completion.d/git-completion.bash"
+    fi
+fi
+
+# GitHub CLI completion, if gh is installed.
+if command -v gh >/dev/null 2>&1 && ! complete -p gh >/dev/null 2>&1; then
+    eval "$(gh completion -s bash)"
 fi
 
 # History configuration
@@ -48,6 +69,14 @@ shopt -s histappend
 
 HISTSIZE=-1
 HISTFILESIZE=-1
+
+# Ghostty can inject a shell hook into PROMPT_COMMAND. If tmux starts a fresh
+# shell without the function definition, remove the stale hook to avoid errors.
+if [[ "$(type -t __ghostty_hook 2>/dev/null)" != "function" ]]; then
+    PROMPT_COMMAND="${PROMPT_COMMAND//__ghostty_hook; /}"
+    PROMPT_COMMAND="${PROMPT_COMMAND//; __ghostty_hook/}"
+    PROMPT_COMMAND="${PROMPT_COMMAND//__ghostty_hook/}"
+fi
 
 # Optimized history sharing (reduced overhead)
 if [[ "$PROMPT_COMMAND" != *"history -a"* ]]; then
@@ -112,4 +141,6 @@ if [[ -d "$HOME/.bun" ]]; then
     export BUN_INSTALL="$HOME/.bun"
     export PATH="$BUN_INSTALL/bin:$PATH"
 fi
-. "$HOME/.cargo/env"
+if [[ -f "$HOME/.cargo/env" ]]; then
+    . "$HOME/.cargo/env"
+fi
