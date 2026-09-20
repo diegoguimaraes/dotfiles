@@ -6,10 +6,9 @@ LANG=en_US.UTF-8
 # Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-if hash brew 2> /dev/null; then
+BREW_PREFIX="${HOMEBREW_PREFIX:-}"
+if [[ -z "$BREW_PREFIX" ]] && hash brew 2>/dev/null; then
     BREW_PREFIX="$(brew --prefix)"
-else
-    BREW_PREFIX=""
 fi
 
 export PATH="${BREW_PREFIX}/bin/:$PATH"
@@ -48,7 +47,9 @@ HISTSIZE=-1
 HISTFILESIZE=-1
 
 # Optimized history sharing (reduced overhead)
-export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+if [[ "$PROMPT_COMMAND" != *"history -a"* ]]; then
+    export PROMPT_COMMAND="history -a${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+fi
 
 # Vi mode for interactive terminal
 if [[ $- == *i* ]]; then
