@@ -83,6 +83,12 @@ if [[ "$PROMPT_COMMAND" != *"history -a"* ]]; then
     export PROMPT_COMMAND="history -a${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 fi
 
+# Ghostty shell integration — defines __ghostty_hook; skipped inside tmux/SSH
+if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
+    # shellcheck source=/dev/null
+    source "$GHOSTTY_RESOURCES_DIR/shell-integration/bash/ghostty.bash"
+fi
+
 # Vi mode for interactive terminal
 if [[ $- == *i* ]]; then
     bind -m vi-insert '\C-l':clear-screen
